@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DAEMON=/usr/bin/python
+ARGS="~/sap/sap.py"
+PIDFILE= "/var/run/sap.pid"
+
+case "$1" in
+  start)
+    echo "Starting sap"
+    /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+        --user www-data --group www-data \
+        -b --make-pidfile \
+        --chuid www-data \
+        --exec $DAEMON $ARGS
+    ;;
+  stop)
+    echo "Stopping sap"
+    /sbin/start-stop-daemon --stop --pidfile $PIDFILE --verbose
+    ;;
+  *)
+    echo "Usage: /etc/init.d/sap {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
