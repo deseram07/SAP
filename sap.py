@@ -1,3 +1,7 @@
+#program started in startup. captures signals and initiates and kills camera according to signal
+#
+#Author: Buddhika De Seram
+
 import sys
 import os
 from capture import *
