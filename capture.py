@@ -1,3 +1,7 @@
+#image captureing program which starts camera and grabs image when button pressed
+#
+#Author: Buddhika De Seram
+
 import cv
 import cv2
 import sys, os,subprocess
@@ -11,10 +15,13 @@ def signal_handler(signal, frame):
     gpio.cleanup()
     sys.exit(0)
 
+#program inputs are the folder to save images and the Video number the computer
+#recognises the camera as
+
 def main(argv):
     imagename = "cap"
-    ext = ".jpg"
-    signal.signal(signal.SIGINT, signal_handler)
+    ext = ".jpg"    #stores image as a jpeg
+    signal.signal(signal.SIGINT, signal_handler)    #signal handelling
     signal.signal(signal.SIGTERM, signal_handler)
     cap = 15
     flash = 7
@@ -27,7 +34,6 @@ def main(argv):
     foldername = argv[0]
     camera = int(argv[1])
     index = 0
-    print foldername
     os.chdir(foldername)
     
     #initiate pins
@@ -42,7 +48,7 @@ def main(argv):
         gpio.setup(i, gpio.OUT)
         gpio.output(i, True)
 
-    capture = cv2.VideoCapture(camera)
+    capture = cv2.VideoCapture(camera)  #starts camera
     capture.set(cv.CV_CAP_PROP_FRAME_WIDTH, 1920)
     capture.set(cv.CV_CAP_PROP_FRAME_HEIGHT, 1080)
     while 1:
@@ -52,13 +58,13 @@ def main(argv):
         gpio.output(led_bz, False)
         
         f,image = capture.read()
-        if gpio.input(cap):
+        if gpio.input(cap):     #if button pressed, capture image
             gpio.output(led_ready, False)
             gpio.output(led_bz, True)
             for i in lasers:
                 gpio.output(i, False)
-            filename = imagename + str(index) + ext 
-            cv2.imwrite(filename, image)
+            filename = imagename + str(index) + ext     #new filename created
+            cv2.imwrite(filename, image)        #saves inage in folder
             index += 1
             time.sleep(5)
         signal.signal(signal.SIGINT, signal_handler)
