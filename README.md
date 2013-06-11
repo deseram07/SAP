@@ -17,3 +17,27 @@ which is automatically done when the files are cloned from ‘GitHub’
 
 “sudo git clone https://github.com/deseram07/SAP.git”
 
+Setting up the deamon:
+The deamon file can be found in the admin folder
+
+Move the file sap into /etc/init.d directory
+Make the file executable
+
+To start the program
+  /etc/init.d/sap start
+To stop the program
+	/etc/init.d/sap stop
+
+To restart the software 60s after it dies, you need to add the 
+program onto crontab. To do this
+	sudo crontab-e
+
+Add the line
+	***** /etc/init.d/sap start
+
+To start the program automatically on startup. You need to use update-rc.d
+	sudo update-rc.d -f sap defaults
+
+And if you ever want to delete it
+	sudo update-rc.d -f sap remove
+
